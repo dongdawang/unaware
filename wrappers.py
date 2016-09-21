@@ -32,3 +32,28 @@ hello()
 产生的动作是：
 hello = deco_maker('ok','sola')(hello)  hello()
 """
+
+#使用functools.wraps()
+def say():
+	pass
+print(say.__name__+'-->正常，debug可以跟踪到函数的运行')
+#加装饰器
+def deco(fn):
+	def wrapper():
+		say()
+	return wrapper
+@deco
+def say():
+	pass
+print(say.__name__+'-->不正常，debug不能跟踪到运行函数的名字')
+#解决办法
+import functools
+def deco(fn):
+	@functools.wraps(fn)
+	def wrapper():
+		say()
+	return wrapper
+@deco
+def say():
+	pass
+print(say.__name__+'-->正常了，debug可以追踪到运行函数的名字')
